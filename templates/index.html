@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>아기 모니터링 시스템</title>
+</head>
+<body>
+    <h1>아기 모니터링 시스템</h1>
+
+    <h2>카메라 영상</h2>
+    <img src="/video_feed" width="640" height="480" />
+
+    <h2>아기 상태</h2>
+    <p>울음 상태: <span id="crying_status">확인 중...</span></p>
+    <p>얼굴 방향: <span id="baby_direction">확인 중...</span></p>
+    <p><strong>움직임 상태:</strong> <span id="movement_status">확인 중...</span></p>
+    <p>아기 체온: <span id="temperature">측정 중...</span></p>
+
+    <h2>서보 모터</h2>
+    <button onclick="toggleServo()">서보 토글</button>
+
+    <script>
+        function startSSE(endpoint, callback) {
+            const evtSource = new EventSource(endpoint);
+            evtSource.onmessage = function(e) {
+                callback(e.data);
+            };
+        }
+
+        // 울음 상태 스트리밍
+        startSSE("/crying_status", data => {
+            document.getElementById("crying_status").innerText = data;
+        });
+
+        // 얼굴 방향 + 움직임 상태 스트리밍
+        startSSE("/baby_direction", data => {
+            document.getElementById("baby_direction").innerText = data;
+
+            const movementStatus = document.getElementById("movement_status");
+            if (data.includes("움직임")) {
+                movementStatus.innerText = "움직임 감지됨";
+            } else if (data.includes("정면")) {
+                movementStatus.innerText = "정면 유지 중";
+            } else {
+                movementStatus.innerText = "인식 안됨";
+            }
+        });
+
+        // 온도 스트리밍
+        startSSE("/temperature_stream", data => {
+            document.getElementById("temperature").innerText = data;
+        });
+
+        // 서보 토글 함수
+        function toggleServo() {
+            fetch('/toggle_servo');
+        }
+    </script>
+</body>
+</html>
