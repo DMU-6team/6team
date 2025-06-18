@@ -50,6 +50,7 @@
 
 [프로젝트 최종발표 ppt](https://raw.githubusercontent.com/DMU-6team/6team/main/스마트아기요람최종발표.pdf)
 
+시연 영상
 
 [시연 영상](https://raw.githubusercontent.com/DMU-6team/6team/main/시연영상.mp4)
 
