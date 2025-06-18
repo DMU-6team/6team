@@ -48,7 +48,7 @@
 
 프로젝트 최종발표
 
-[프로젝트 최종발표 ppt](https://raw.githubusercontent.com/DMU-6team/6team/main/.pptx)
+[프로젝트 최종발표 ppt](https://raw.githubusercontent.com/DMU-6team/6team/main/스마트아기요람최종발표.pptx)
 
 
 시연 영상
