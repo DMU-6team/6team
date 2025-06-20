@@ -4,6 +4,10 @@
 ## 1. 프로젝트 개요
 <img src="개요2.png" />
 
+### 1-2. 주제 선정 배경과 목표
+- [분리수면 관련 유튜브](https://youtu.be/g_63LJGW7_c?si=FR7lXDaP0scf7UYZ)
+- [분리수면 관련 논문 정리 블로그](https://cryycrypto.tistory.com/m/67?category=1121145)
+ <img src="개요1.png" />
 
 ## 2. 프로젝트 소개
 
@@ -21,11 +25,6 @@
 
 ## 2-2. 현재 있는 제품과 차이점
 <img src="기능2.png" />
-
-### 2-2. 주제 선정 배경과 목표
-- [분리수면 관련 유튜브](https://youtu.be/g_63LJGW7_c?si=FR7lXDaP0scf7UYZ)
-- [분리수면 관련 논문 정리 블로그](https://cryycrypto.tistory.com/m/67?category=1121145)
- <img src="개요1.png" />
 
   
 ### 2-3. 프로젝트 일정
