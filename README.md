@@ -2,9 +2,11 @@
 <img src="test.png" />
 
 ## 1. 프로젝트 개요
+<img src="개요2.png" />
 
 
 ## 2. 프로젝트 소개
+
 
 
 ### 2-1. 주요 기능
@@ -18,6 +20,8 @@
 ### 2-2. 주제 선정 배경과 목표
 - [분리수면 관련 유튜브](https://youtu.be/g_63LJGW7_c?si=FR7lXDaP0scf7UYZ)
 - [분리수면 관련 논문 정리 블로그](https://cryycrypto.tistory.com/m/67?category=1121145)
+ <img src="개요1.png" />
+
   
 ### 2-3. 프로젝트 일정
 2025년 3월 ~ 2025년 12월  
