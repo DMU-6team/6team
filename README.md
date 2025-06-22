@@ -31,6 +31,10 @@
 2025년 3월 ~ 2025년 12월  
 <img src="일정.png" />
 
+### UI
+<img src="image.png" />
+
+
 ## 멤버 소개
 |<img width=150 src="" />|<img width=150 src="" />|<img width=150 src="" />|<img width=150 src="" />|<img width=150 src="" />|
 |:----:|:----:|:----:|:----:|:----:|
