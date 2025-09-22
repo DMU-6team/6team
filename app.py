@@ -8,7 +8,7 @@ import time
 import joblib
 from flask import Flask, render_template, Response
 from flask_sqlalchemy import SQLAlchemy
-import cv2
+import cv2 
 import serial
 import mediapipe as mp
 
