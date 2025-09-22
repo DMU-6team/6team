@@ -10,7 +10,7 @@ CRY_DIR = "/home/pi/inno_2/cry/cry_data"
 NONCRY_DIR = "/home/pi/inno_2/cry/noncry_data"
 SR = 16000
 DURATION = 2.0
-N_MFCC = 13
+N_MFCC = 13 
 MAX_LEN = 40
 MODEL_PATH = "knn_model.joblib"
 
