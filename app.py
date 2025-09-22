@@ -25,8 +25,7 @@ TEMP_AUDIO_FILE = "temp_resampled.wav"
 app = Flask(__name__)
 
 # ─── DB 설정 ───
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'baby_monitor.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://flaskuser:your_password@localhost/baby_monitor_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
