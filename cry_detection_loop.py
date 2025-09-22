@@ -1,6 +1,6 @@
 import sounddevice as sd
 import soundfile as sf
-import numpy as np
+import numpy as np 
 import librosa
 import time
 from sklearn.neighbors import KNeighborsClassifier
