@@ -7,6 +7,7 @@ import threading
 import time
 import joblib
 from flask import Flask, render_template, Response
+from flask_sqlalchemy import SQLAlchemy
 import cv2
 import serial
 import mediapipe as mp
@@ -23,6 +24,12 @@ TEMP_AUDIO_FILE = "temp_resampled.wav"
 
 app = Flask(__name__)
 
+# ─── DB 설정 ───
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'baby_monitor.db')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
 # ─── Mediapipe 세팅 ───
 mp_face_mesh = mp.solutions.face_mesh
 face_mesh = mp_face_mesh.FaceMesh(
@@ -34,8 +41,17 @@ face_mesh = mp_face_mesh.FaceMesh(
 
 baby_direction = "확인 중..."
 
-# ───────── 울음소리 판법 ─────────
+# ─── 체온 데이터를 저장할 모델 (테이블 정의) ───
+class Temperature(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    temp = db.Column(db.Float, nullable=False)
+    timestamp = db.Column(db.DateTime, default=db.func.current_timestamp())
 
+# DB 초기화 (애플리케이션 컨텍스트 안에서 실행)
+with app.app_context():
+    db.create_all()
+
+# ───────── 울음소리 판별 ─────────
 def record_resample():
     try:
         audio = sd.rec(int(DURATION * INPUT_SR), samplerate=INPUT_SR,
@@ -67,11 +83,15 @@ def predict_cry():
     mfcc = extract_mfcc(TEMP_AUDIO_FILE)
     if mfcc is None:
         return
-    model = joblib.load(MODEL_PATH)
-    result = model.predict([mfcc])[0]
-    prob = model.predict_proba([mfcc])[0][1]
-    print(f"🍼 Result: {'Crying' if result == 1 else 'Not Crying'} (Cry probability: {prob:.3f})")
-    crying_status = "Crying" if result == 1 else "Silent"
+    try:
+        model = joblib.load(MODEL_PATH)
+        result = model.predict([mfcc])[0]
+        prob = model.predict_proba([mfcc])[0][1]
+        print(f"🍼 Result: {'Crying' if result == 1 else 'Not Crying'} (Cry probability: {prob:.3f})")
+        crying_status = "Crying" if result == 1 else "Silent"
+    except FileNotFoundError:
+        print(f"[ERROR] 모델 파일을 찾을 수 없습니다: {MODEL_PATH}")
+        crying_status = "모델 에러"
 
 def cry_monitor_loop():
     while True:
@@ -80,7 +100,6 @@ def cry_monitor_loop():
         time.sleep(1)
 
 # ───────── USB 카메라 자동 탐색 ─────────
-
 def find_working_camera():
     for i in range(1, 5):
         cap = cv2.VideoCapture(i)
@@ -92,11 +111,16 @@ def find_working_camera():
                 return i
     raise RuntimeError("❌ 사용 가능한 USB 카메라를 찾을 수 없습니다.")
 
-CAM_INDEX = find_working_camera()
-cap = cv2.VideoCapture(CAM_INDEX)
-time.sleep(2)
-if not cap.isOpened():
-    raise RuntimeError("❌ 카메라 초기화 실패")
+try:
+    CAM_INDEX = find_working_camera()
+    cap = cv2.VideoCapture(CAM_INDEX)
+    time.sleep(2)
+    if not cap.isOpened():
+        raise RuntimeError("❌ 카메라 초기화 실패")
+except RuntimeError as e:
+    print(e)
+    cap = None
+    baby_direction = "카메라 에러"
 
 # ───────── 시리얼 설정 ─────────
 try:
@@ -119,8 +143,20 @@ def read_serial():
                 line = ser.readline().decode('utf-8', errors='ignore').strip()
                 print("Serial >", line)
                 if "아기 체온:" in line:
-                    temp = line.replace("아기 체온:", "").replace("\u00b0C", "").strip()
-                    temperature = temp
+                    temp_str = line.replace("아기 체온:", "").replace("\u00b0C", "").strip()
+                    try:
+                        temp_float = float(temp_str)
+                        temperature = temp_float
+                        
+                        # 🌡️ DB에 체온 저장
+                        with app.app_context():
+                            new_temp = Temperature(temp=temp_float)
+                            db.session.add(new_temp)
+                            db.session.commit()
+                        print(f"✅ DB에 체온 {temp_float}°C 저장 완료")
+                    except ValueError:
+                        print("유효하지 않은 체온 값:", temp_str)
+                        temperature = "Error"
         except Exception as e:
             print("Serial Read Error:", e)
             temperature = "Error"
@@ -134,15 +170,18 @@ def servo_loop():
             print("Servo Error:", e)
             break
 
-# ─────── 영상 스트리링 ───────
-
+# ─────── 영상 스트리밍 ───────
 def gen_frames():
     global baby_direction
     while True:
+        if not cap:
+            time.sleep(1)
+            continue
+        
         ret, frame = cap.read()
         if not ret:
-            print("[ERROR] 프레임 캐터 실패")
-            baby_direction = "카메라 잘못 가지음"
+            print("[ERROR] 프레임 캡처 실패")
+            baby_direction = "카메라 에러"
             continue
 
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -165,9 +204,6 @@ def gen_frames():
                 baby_direction = "우측으로 움직임"
             else:
                 baby_direction = "좌측으로 움직임"
-
-            # cv2.putText(image, f'Direction: {baby_direction}', (10, 30),
-                     #   cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
         else:
             baby_direction = "인식 안됨"
 
@@ -175,7 +211,7 @@ def gen_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
 
-# ─────── Flask 라우티닝 ───────
+# ─────── Flask 라우팅 ───────
 @app.route('/')
 def index():
     return render_template('index.html')
