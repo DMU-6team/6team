@@ -41,7 +41,7 @@
 | [홍가의](https://github.com/) | [윤세빈](https://github.com/) | [임주현](https://github.com/) | [이재왕](https://github.com/) | [김지언](https://github.com/) |
 | IoT | IoT | Back-End | Front-End | Front-End |
 
-## 개발환경
+## 개발 환경
 - **Front-end**:  <img src="https://img.shields.io/badge/flutter-02569B?style=flat&logo=flutter&logoColor=white"/>
 
 - **Back-end**:  <img src="https://img.shields.io/badge/node.js-339933?style=flat&logo=Node.js&logoColor=white"/>
