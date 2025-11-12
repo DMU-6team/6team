@@ -56,6 +56,9 @@
 
 - **협업 툴**: <img src="https://img.shields.io/badge/notion-ffffff?style=flat&logo=notion&logoColor=black"/> <img src="https://img.shields.io/badge/github-1c8139?style=flat&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/discord-5562ea?style=flat&logo=discord&logoColor=white"/>
 
+## 컴포넌트 상세
+<img src="슬라이드9.PNG" />
+
 ## 프로젝트
 시스템 구성도
 <img src="KakaoTalk_20251103_212929582.png" />
