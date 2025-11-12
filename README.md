@@ -20,16 +20,16 @@
 - 아기 움직임 감지
 - 자장가, 백색소음 재생
 - 아기 울음 감지
-<img src="슬라이드7.png" />
+<img src="슬라이드7.PNG" />
 
 
 ## 2-2. 현재 있는 제품과 차이점
-<img src="슬라이드8.png" />
+<img src="슬라이드8.PNG" />
 
   
 ### 2-3. 프로젝트 일정
 2025년 3월 ~ 2025년 12월  
-<img src="슬라이드6.png" />
+<img src="슬라이드6.PNG" />
 
 ### UI
 <img src="image.png" />
@@ -49,7 +49,6 @@
 - **Database**: <img src="https://img.shields.io/badge/mysql-4479A1?style=flat&logo=mysql&logoColor=white"/>
 
 - **협업 툴**: <img src="https://img.shields.io/badge/notion-ffffff?style=flat&logo=notion&logoColor=black"/> <img src="https://img.shields.io/badge/github-1c8139?style=flat&logo=github&logoColor=white"/> <img src="https://img.shields.io/badge/discord-5562ea?style=flat&logo=discord&logoColor=white"/>
-- **디자인**: <img src="https://img.shields.io/badge/figma-430098?style=flat&logo=figma&logoColor=white"/>
 
 ## 프로젝트
 시스템 구성도
