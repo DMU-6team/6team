@@ -62,7 +62,7 @@
 ## 프로젝트
 시스템 구성도
 <img src="KakaoTalk_20251103_212929582.png" />
-<img src="KakaoTalk_20251103_212944179.png" />
+<img src="ERD" />
 
 프로젝트 계획서
 
