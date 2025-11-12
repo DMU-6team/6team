@@ -1,6 +1,10 @@
 # 스마트 아기요람
 <img src="test.png" />
 
+<img src="슬라이드2.PNG" />
+
+<img src="슬라이드3.PNG" />
+
 ## 1. 프로젝트 개요
 <img src="개요2.png" />
 
