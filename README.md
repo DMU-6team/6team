@@ -53,9 +53,9 @@
 
 ## 프로젝트
 시스템 구성도
-<img src="아키텍쳐.png" />
+<img src="KakaoTalk_20251103_212929582.png" />
 
-<img scr="KakaoTalk_20251103_212944179.png" />
+
 프로젝트 계획서
 
 [프로젝트 계획서 ppt](https://raw.githubusercontent.com/DMU-6team/6team/main/스마트아기요람계획서.pptx)
